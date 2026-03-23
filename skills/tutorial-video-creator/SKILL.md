@@ -76,7 +76,7 @@ ffmpeg -i source-voiceover.MOV -vn -c:a pcm_s16le -ar 48000 public/voiceover-aud
 Use the transcription script with local Whisper API:
 
 ```bash
-npx tsx scripts/transcribe.ts
+python3 scripts/transcribe.py
 ```
 
 Configure the Whisper API URL and model in the script. Default: `http://localhost:12017`.
@@ -150,5 +150,5 @@ npm run render:all
 
 ### Scripts
 - **`scripts/scaffold.sh`** — Creates complete Remotion project structure
-- **`scripts/transcribe-template.ts`** — Whisper API transcription script template
+- **`scripts/transcribe-template.py`** — Whisper API transcription script (Python 3, no dependencies)
 - **`scripts/convert-videos-template.sh`** — FFmpeg conversion script template
