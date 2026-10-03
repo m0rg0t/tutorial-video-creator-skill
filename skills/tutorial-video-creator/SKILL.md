@@ -1,7 +1,7 @@
 ---
 name: Tutorial Video Creator
 description: This skill should be used when the user asks to "create a tutorial video", "make an educational video", "combine screen recording with voiceover", "add face circle overlay to video", "create vertical video with captions", "make a Remotion video", "add subtitles to screen recording", or needs to produce vertical social media videos from screen recordings and talking head footage.
-version: 0.1.0
+version: 0.1.1
 ---
 
 # Tutorial Video Creator
@@ -37,13 +37,13 @@ Collect from the user:
 
 ## Step 2: Scaffold Remotion Project
 
-Create the project directory structure:
+Use Node.js 24 LTS, Python 3.11+ and FFmpeg. From this skill directory, create the project directories and copy the Python transcription template:
 
 ```bash
-mkdir -p <target-directory>/remotion-video/{src/components,public,scripts,out}
+bash scripts/scaffold.sh <target-directory>
 ```
 
-Then create the source files from **`references/project-structure.md`** and install dependencies:
+Then create the source files from **`references/project-structure.md`** and **`references/components.md`** before installing dependencies (the scaffold does not generate these files):
 
 ```bash
 cd <target-directory>/remotion-video && npm install
@@ -149,6 +149,5 @@ npm run render:all
 - **`references/troubleshooting.md`** — Common issues and solutions
 
 ### Scripts
-- **`scripts/scaffold.sh`** — Creates complete Remotion project structure
+- **`scripts/scaffold.sh`** — Creates project directories and copies `scripts/transcribe.py` without overwriting an existing copy
 - **`scripts/transcribe-template.py`** — Whisper API transcription script (Python 3, no dependencies)
-- **`scripts/convert-videos-template.sh`** — FFmpeg conversion script template

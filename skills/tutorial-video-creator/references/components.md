@@ -149,6 +149,7 @@ import {
   Sequence,
   staticFile,
   useCurrentFrame,
+  useDelayRender,
   useVideoConfig,
 } from "remotion";
 import {
@@ -220,17 +221,26 @@ export const Captions: React.FC<{
   const hasBottomFace =
     facePosition === "bottom-left" && position === "bottom";
   const [captions, setCaptions] = useState<Caption[] | null>(null);
+  const { delayRender, continueRender, cancelRender } = useDelayRender();
+  const [handle] = useState(() => delayRender("Loading captions.json"));
   const { fps } = useVideoConfig();
 
   const fetchCaptions = useCallback(async () => {
     try {
       const response = await fetch(staticFile("captions.json"));
-      const data = await response.json();
-      setCaptions(data);
-    } catch (e) {
-      console.error("Failed to load captions:", e);
+      if (!response.ok) {
+        throw new Error(`Failed to load captions: HTTP ${response.status}`);
+      }
+      const data: unknown = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error("captions.json must contain a Caption[] array");
+      }
+      setCaptions(data as Caption[]);
+      continueRender(handle);
+    } catch (error) {
+      cancelRender(error);
     }
-  }, []);
+  }, [handle, continueRender, cancelRender]);
 
   useEffect(() => {
     fetchCaptions();
@@ -295,6 +305,8 @@ export const Captions: React.FC<{
   );
 };
 ```
+
+The render is delayed until `captions.json` loads successfully; HTTP and parsing errors cancel the render instead of silently producing a video without captions. See [Remotion data fetching](https://www.remotion.dev/docs/data-fetching) and [useDelayRender](https://www.remotion.dev/docs/use-delay-render).
 
 ### Caption Styling Options
 
