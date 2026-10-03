@@ -74,6 +74,32 @@ The skill activates when you ask Claude to:
 - "Make a Remotion video"
 - "Add subtitles to screen recording"
 
+## Development checks
+
+The Python transcriber uses only the standard library (Python 3.11+). Run the
+synthetic-fixture tests and shell syntax check from the repository root:
+
+```bash
+python3 -m unittest discover -s tests -v
+bash -n skills/tutorial-video-creator/scripts/scaffold.sh
+```
+
+CI runs these checks on Python 3.11 and 3.14. It also extracts the actual Remotion
+reference code blocks, installs their dependencies with lifecycle scripts disabled,
+and typechecks the project on Node.js 24. To reproduce that check, choose a new,
+empty directory:
+
+```bash
+python3 tests/materialize_reference.py /path/to/empty-reference-project
+cd /path/to/empty-reference-project
+npm install --ignore-scripts --no-audit --no-fund
+npm run typecheck
+```
+
+These checks do not install the skill, transcribe audio, call a live API, or render
+media. End-to-end transcription and visual output still need real input files and
+a configured local Whisper server.
+
 ## License
 
 MIT

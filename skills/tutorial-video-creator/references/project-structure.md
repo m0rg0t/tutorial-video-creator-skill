@@ -22,8 +22,7 @@ remotion-video/
 │   ├── voiceover-audio.wav         # Optional enhanced audio
 │   └── captions.json
 ├── scripts/
-│   ├── convert-videos.sh
-│   └── transcribe.ts
+│   └── transcribe.py               # Copied by scaffold.sh
 └── out/                            # Rendered output
 ```
 
@@ -34,32 +33,34 @@ remotion-video/
   "name": "tutorial-video",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "studio": "remotion studio",
     "render:all": "npm run render:v1 && npm run render:v2 && npm run render:v3",
     "render:v1": "remotion render CircleBottomLeft out/circle-bottom-left.mp4",
     "render:v2": "remotion render CircleTopRight out/circle-top-right.mp4",
     "render:v3": "remotion render CaptionsOnly out/captions-only.mp4",
-    "convert": "bash scripts/convert-videos.sh",
-    "transcribe": "npx tsx scripts/transcribe.ts"
+    "typecheck": "tsc --noEmit",
+    "transcribe": "python3 scripts/transcribe.py"
   },
   "dependencies": {
-    "@remotion/cli": "4.0.438",
-    "@remotion/media": "4.0.438",
-    "@remotion/captions": "4.0.438",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "remotion": "4.0.438",
-    "zod": "^4.3.6"
+    "@remotion/cli": "4.0.532",
+    "@remotion/media": "4.0.532",
+    "@remotion/captions": "4.0.532",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.532"
   },
   "devDependencies": {
-    "@remotion/eslint-config": "4.0.438",
-    "@types/react": "^19.1.4",
-    "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
+    "@types/react": "19.3.0",
+    "typescript": "7.0.2"
   }
 }
 ```
+
+Use Node.js 24 LTS, Python 3.11+ and FFmpeg. The scripts require no Python packages. The direct npm versions above were checked on 2026-10-03; commit the generated `package-lock.json` in your video project and use `npm ci` for repeat installs. `tsx`, Zod and an ESLint config are not needed by these templates.
 
 **Important:** All `@remotion/*` and `remotion` packages must share the exact same version. Check latest with `npm view remotion version`.
 
@@ -80,7 +81,7 @@ remotion-video/
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "remotion.config.ts"]
 }
 ```
 

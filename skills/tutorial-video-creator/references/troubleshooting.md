@@ -49,8 +49,8 @@
 ## Remotion Issues
 
 ### Version mismatch warning
-**Cause:** `zod` or other dependency version doesn't match Remotion's requirements.
-**Fix:** Check the warning message and install the exact version: `npm install zod@4.3.6`
+**Cause:** Installed `remotion` and `@remotion/*` versions differ.
+**Fix:** Inspect `npm ls remotion @remotion/cli @remotion/media @remotion/captions`, align all four packages to the same exact version in `package.json`, then run `npm install`. Do not add Zod unless your own components use it.
 
 ### "Cannot find module" errors
 **Cause:** Missing Remotion packages.
